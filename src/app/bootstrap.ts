@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ResponseInterceptor } from '@shared/interceptors/response.interceptor';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from '@shared/filters/http-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
@@ -9,6 +9,7 @@ import helmet from 'helmet';
 export async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableShutdownHooks();
   app.use(helmet());
   app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(
@@ -20,15 +21,11 @@ export async function bootstrap() {
   );
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.enableCors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') ?? '*',
-    credentials: true,
-  });
 
   if (process.env.NODE_ENV !== 'prod') {
     const config = new DocumentBuilder()
-      .setTitle('Pdf Pipeline API')
-      .setDescription('Pdf Pipeline API Documentation')
+      .setTitle('Joseph88 Pdf Pipeline API')
+      .setDescription('Joseph88 Pdf Pipeline API Documentation')
       .setVersion('1.0')
       .addBearerAuth()
       .build();
@@ -36,5 +33,7 @@ export async function bootstrap() {
     SwaggerModule.setup('docs', app, document);
   }
 
-  await app.listen(process.env.PORT ?? 3000);
+  const port = process.env.PORT ?? 3000;
+  await app.listen(port);
+  Logger.log(`Server running on port ${port}`, 'Bootstrap');
 }

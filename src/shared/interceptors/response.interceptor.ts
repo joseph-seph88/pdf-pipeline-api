@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { StatusType } from '../constants/status-type.constant';
 
 @Injectable()
 export class ResponseInterceptor<T> implements NestInterceptor<T> {
@@ -18,7 +19,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T> {
     return next.handle().pipe(
       map((data) => ({
         status_code: response.statusCode,
-        status_type: 'SUCCESS',
+        status_type: StatusType.SUCCESS,
         data,
       })),
     );

@@ -6,4 +6,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
     await this.$connect();
   }
+
+  async ping(): Promise<void> {
+    await this.$queryRaw`SELECT 1`;
+  }
 }
