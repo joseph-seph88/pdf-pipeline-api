@@ -5,7 +5,7 @@ import { SignUpUseCase } from '../application/use-cases/sign-up.use-case';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
 
-@ApiTags('auth')
+@ApiTags('인증')
 @Controller('auth')
 export class AuthController {
   constructor(
