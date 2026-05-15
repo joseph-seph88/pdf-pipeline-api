@@ -10,9 +10,11 @@ export async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableShutdownHooks();
+  const isProd = process.env.NODE_ENV === 'prod';
   app.use(
     helmet({
-      contentSecurityPolicy: process.env.NODE_ENV === 'prod' ? undefined : false,
+      contentSecurityPolicy: isProd ? undefined : false,
+      hsts: isProd ? undefined : false,
     }),
   );
   app.setGlobalPrefix('api/v1');
