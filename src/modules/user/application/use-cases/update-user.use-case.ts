@@ -2,6 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { USER_REPOSITORY } from '../../domain/repositories/user.repository.interface';
 import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
 import { UserEntity } from '../../domain/entities/user.entity';
+import { DomainException } from '../../../../shared/exceptions/app.exceptions';
 
 export interface UpdateUserInput {
   id: string;
@@ -17,6 +18,10 @@ export class UpdateUserUseCase {
   ) {}
 
   async execute(input: UpdateUserInput): Promise<UserEntity> {
+    if (input.nickname === undefined && input.profileImage === undefined) {
+      throw new DomainException('변경할 항목을 하나 이상 입력해주세요');
+    }
+
     const user = await this.userRepository.findById(input.id);
     if (!user) {
       throw new NotFoundException('User not found');

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigType } from '@nestjs/config';
+import type { StringValue } from 'ms';
 import jwtConfig from '../../config/jwt.config';
 import { AuthRepository } from './persistence/repositories/auth.repository';
 import { LoginUseCase } from './application/use-cases/login.use-case';
@@ -17,7 +18,7 @@ import { JwtStrategy } from '../../infrastructure/jwt/jwt.strategy';
       inject: [jwtConfig.KEY],
       useFactory: (config: ConfigType<typeof jwtConfig>) => ({
         secret: config.secret,
-        signOptions: { expiresIn: config.expiresIn as any },
+        signOptions: { expiresIn: config.expiresIn as StringValue },
       }),
     }),
   ],

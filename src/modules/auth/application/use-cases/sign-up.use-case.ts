@@ -2,6 +2,7 @@ import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AUTH_REPOSITORY } from '../../domain/repositories/auth.repository.interface';
 import type { IAuthRepository } from '../../domain/repositories/auth.repository.interface';
+import { DomainException } from '../../../../shared/exceptions/app.exceptions';
 
 export interface SignUpInput {
   email: string;
@@ -20,6 +21,10 @@ export class SignUpUseCase {
   ) {}
 
   async execute(input: SignUpInput): Promise<void> {
+    if (!input.agreedToTerms || !input.agreedToPrivacyPolicy) {
+      throw new DomainException('약관 및 개인정보처리방침에 동의해야 합니다');
+    }
+
     const existing = await this.authRepository.findByEmail(
       input.email.toLowerCase(),
     );

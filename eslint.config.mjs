@@ -36,4 +36,10 @@ export default tseslint.config(
       "prettier/prettier": ["warn", { endOfLine: "auto" }],
     },
   },
+  {
+    files: ['**/*.repository.ts'],
+    rules: {
+      '@typescript-eslint/no-unsafe-argument': 'off',
+    },
+  },
 );
