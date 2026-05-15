@@ -11,12 +11,22 @@ export class AuthRepository implements IAuthRepository {
 
   async findByEmail(
     email: string,
-  ): Promise<{ id: string; email: string; password: string; deletedAt: Date | null } | null> {
+  ): Promise<{
+    id: string;
+    email: string;
+    password: string;
+    deletedAt: Date | null;
+  } | null> {
     const user = await this.prisma.user.findFirst({
       where: { email },
     });
     if (!user) return null;
-    return { id: user.id, email: user.email, password: user.password, deletedAt: user.deletedAt };
+    return {
+      id: user.id,
+      email: user.email,
+      password: user.password,
+      deletedAt: user.deletedAt,
+    };
   }
 
   async create(params: CreateAuthUserParams): Promise<void> {
