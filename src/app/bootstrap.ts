@@ -1,16 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ResponseInterceptor } from '@shared/interceptors/response.interceptor';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from '@shared/filters/http-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppLogger } from '@shared/logger/app.logger';
 import helmet from 'helmet';
 
 export async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const isDev = process.env.NODE_ENV !== 'prod';
+  const logger = new AppLogger();
+
+  const app = await NestFactory.create(AppModule, {
+    logger: isDev ? logger : ['error'],
+  });
 
   app.enableShutdownHooks();
-  const isProd = process.env.NODE_ENV === 'prod';
+  const isProd = !isDev;
   app.use(
     helmet({
       contentSecurityPolicy: isProd ? undefined : false,
@@ -41,5 +47,8 @@ export async function bootstrap() {
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
-  Logger.log(`Server running on port ${port}`, 'Bootstrap');
+  if (isDev) {
+    logger.log(`Server running on http://localhost:${port}`, 'Bootstrap');
+    logger.log(`Swagger docs: http://localhost:${port}/docs`, 'Bootstrap');
+  }
 }

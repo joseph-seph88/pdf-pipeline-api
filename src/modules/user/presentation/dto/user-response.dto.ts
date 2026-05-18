@@ -11,10 +11,18 @@ export class UserResponseDto {
   @ApiProperty({ example: '홍길동', description: '이름' })
   name: string;
 
-  @ApiPropertyOptional({ example: '길동이', description: '닉네임', nullable: true })
+  @ApiPropertyOptional({
+    example: '길동이',
+    description: '닉네임',
+    nullable: true,
+  })
   nickname: string | null;
 
-  @ApiPropertyOptional({ example: 'https://example.com/image.jpg', description: '프로필 이미지 URL', nullable: true })
+  @ApiPropertyOptional({
+    example: 'https://example.com/image.jpg',
+    description: '프로필 이미지 URL',
+    nullable: true,
+  })
   profileImage: string | null;
 
   @ApiProperty({ example: true, description: '서비스 이용약관 동의 여부' })

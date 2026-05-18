@@ -9,15 +9,30 @@ datasource db {
 }
 
 model User {
-  id                     String    @id @default(uuid())
-  email                  String    @unique
+  id                     String     @id @default(uuid())
+  email                  String     @unique
   password               String
   name                   String
   nickname               String?
   profileImage           String?
-  agreedToTerms          Boolean   @default(false)
-  agreedToPrivacyPolicy  Boolean   @default(false)
-  createdAt              DateTime  @default(now())
-  updatedAt              DateTime  @updatedAt
+  agreedToTerms          Boolean    @default(false)
+  agreedToPrivacyPolicy  Boolean    @default(false)
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
   deletedAt              DateTime?
+  documents              Document[]
+}
+
+model Document {
+  id           String    @id @default(uuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id])
+  originalName String
+  fileName     String
+  s3Key        String
+  s3Url        String?
+  fileSize     Int
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
 }

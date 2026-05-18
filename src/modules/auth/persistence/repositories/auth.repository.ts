@@ -9,9 +9,7 @@ import {
 export class AuthRepository implements IAuthRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findByEmail(
-    email: string,
-  ): Promise<{
+  async findByEmail(email: string): Promise<{
     id: string;
     email: string;
     password: string;

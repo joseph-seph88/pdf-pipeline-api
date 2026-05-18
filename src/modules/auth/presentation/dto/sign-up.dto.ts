@@ -16,7 +16,10 @@ export class SignUpDto {
   @MaxLength(254)
   email: string;
 
-  @ApiProperty({ example: 'Password1!', description: '비밀번호 (영문자, 숫자, 특수문자 포함 8자 이상)' })
+  @ApiProperty({
+    example: 'Password1!',
+    description: '비밀번호 (영문자, 숫자, 특수문자 포함 8자 이상)',
+  })
   @IsString()
   @MinLength(8)
   @MaxLength(72)
