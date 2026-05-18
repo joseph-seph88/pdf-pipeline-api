@@ -15,7 +15,10 @@ export class UpdateUserDto {
   @MaxLength(50)
   nickname?: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/image.jpg', description: '프로필 이미지 URL' })
+  @ApiPropertyOptional({
+    example: 'https://example.com/image.jpg',
+    description: '프로필 이미지 URL',
+  })
   @IsOptional()
   @IsUrl()
   @MaxLength(2048)

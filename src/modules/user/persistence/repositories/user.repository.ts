@@ -5,19 +5,7 @@ import {
   UpdateUserParams,
 } from '../../domain/repositories/user.repository.interface';
 import { UserEntity } from '../../domain/entities/user.entity';
-
-const USER_SELECT = {
-  id: true,
-  email: true,
-  name: true,
-  nickname: true,
-  profileImage: true,
-  agreedToTerms: true,
-  agreedToPrivacyPolicy: true,
-  createdAt: true,
-  updatedAt: true,
-  deletedAt: true,
-} as const;
+import { UserMapper, USER_SELECT } from '../mappers/user.mapper';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -29,7 +17,7 @@ export class UserRepository implements IUserRepository {
       select: USER_SELECT,
     });
     if (!user) return null;
-    return this.toEntity(user);
+    return UserMapper.toEntity(user);
   }
 
   async findByEmail(email: string): Promise<UserEntity | null> {
@@ -38,7 +26,7 @@ export class UserRepository implements IUserRepository {
       select: USER_SELECT,
     });
     if (!user) return null;
-    return this.toEntity(user);
+    return UserMapper.toEntity(user);
   }
 
   async update(id: string, params: UpdateUserParams): Promise<UserEntity> {
@@ -47,7 +35,7 @@ export class UserRepository implements IUserRepository {
       data: { ...params },
       select: USER_SELECT,
     });
-    return this.toEntity(user);
+    return UserMapper.toEntity(user);
   }
 
   async softDelete(id: string): Promise<void> {
@@ -55,31 +43,5 @@ export class UserRepository implements IUserRepository {
       where: { id, deletedAt: null },
       data: { deletedAt: new Date() },
     });
-  }
-
-  private toEntity(user: {
-    id: string;
-    email: string;
-    name: string;
-    nickname: string | null;
-    profileImage: string | null;
-    agreedToTerms: boolean;
-    agreedToPrivacyPolicy: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-  }): UserEntity {
-    return new UserEntity(
-      user.id,
-      user.email,
-      user.name,
-      user.nickname,
-      user.profileImage,
-      user.agreedToTerms,
-      user.agreedToPrivacyPolicy,
-      user.createdAt,
-      user.updatedAt,
-      user.deletedAt,
-    );
   }
 }

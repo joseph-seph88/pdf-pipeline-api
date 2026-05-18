@@ -1,13 +1,8 @@
+import { CreateAuthUserParams } from '../types/auth.types';
+
 export const AUTH_REPOSITORY = 'AUTH_REPOSITORY';
 
-export interface CreateAuthUserParams {
-  email: string;
-  hashedPassword: string;
-  name: string;
-  nickname?: string;
-  agreedToTerms: boolean;
-  agreedToPrivacyPolicy: boolean;
-}
+export type { CreateAuthUserParams };
 
 export interface IAuthRepository {
   findByEmail(email: string): Promise<{

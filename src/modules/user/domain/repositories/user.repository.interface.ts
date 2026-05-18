@@ -1,11 +1,9 @@
 import { UserEntity } from '../entities/user.entity';
+import { UpdateUserParams } from '../types/user.types';
 
 export const USER_REPOSITORY = 'USER_REPOSITORY';
 
-export interface UpdateUserParams {
-  nickname?: string;
-  profileImage?: string;
-}
+export type { UpdateUserParams };
 
 export interface IUserRepository {
   findById(id: string): Promise<UserEntity | null>;
