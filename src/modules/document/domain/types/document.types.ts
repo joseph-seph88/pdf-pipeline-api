@@ -3,5 +3,6 @@ export interface CreateDocumentParams {
   originalName: string;
   fileName: string;
   s3Key: string;
+  s3Url: string;
   fileSize: number;
 }
