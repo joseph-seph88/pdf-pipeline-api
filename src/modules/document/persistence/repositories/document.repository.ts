@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../../../infrastructure/prisma/prisma.service';
 import {
   IDocumentRepository,
@@ -13,7 +14,7 @@ export class DocumentRepository implements IDocumentRepository {
 
   async create(params: CreateDocumentParams): Promise<DocumentEntity> {
     const doc = await this.prisma.document.create({
-      data: params,
+      data: params as Prisma.DocumentUncheckedCreateInput,
       select: DOCUMENT_SELECT,
     });
     return DocumentMapper.toEntity(doc);

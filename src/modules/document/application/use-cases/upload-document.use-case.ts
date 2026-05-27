@@ -40,7 +40,8 @@ export class UploadDocumentUseCase {
         originalName: basename(params.originalName),
         fileName,
         s3Key: key,
-fileSize: params.fileSize,
+        s3Url: url,
+        fileSize: params.fileSize,
       });
     } catch (error) {
       await this.fileStorageRepository.delete(key).catch(() => {});

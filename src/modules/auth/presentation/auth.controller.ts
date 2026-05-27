@@ -25,7 +25,7 @@ export class AuthController {
     return this.loginUseCase.execute(dto.email, dto.password);
   }
 
-  @Post('sign-up')
+  @Post('signup')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: '회원가입' })
   @ApiWrappedResponse(MessageResponseDto, 201)
