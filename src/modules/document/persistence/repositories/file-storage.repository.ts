@@ -53,6 +53,28 @@ export class FileStorageRepository implements IFileStorageRepository {
     return { url, key, fileName };
   }
 
+  async uploadImage(
+    buffer: Buffer,
+    userId: string,
+    mimeType: string,
+  ): Promise<UploadResult> {
+    const ext = mimeType.split('/')[1]?.replace('jpeg', 'jpg') ?? 'jpg';
+    const fileName = `${randomUUID()}.${ext}`;
+    const key = `profiles/${userId}/${fileName}`;
+
+    await this.client.send(
+      new PutObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+        Body: buffer,
+        ContentType: mimeType,
+      }),
+    );
+
+    const url = `https://${this.bucket}.s3.${this.region}.amazonaws.com/${key}`;
+    return { url, key, fileName };
+  }
+
   async delete(key: string): Promise<void> {
     await this.client.send(
       new DeleteObjectCommand({ Bucket: this.bucket, Key: key }),
