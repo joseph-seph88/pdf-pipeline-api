@@ -60,7 +60,11 @@ export class UserController {
   @ApiResponse({ status: 401, description: '인증 실패' })
   async getMe(@CurrentUser() user: JwtPayload) {
     const entity = await this.getUserUseCase.execute(user.sub);
-    return UserResponseDto.fromEntity(entity);
+    const dto = UserResponseDto.fromEntity(entity);
+    if (entity.profileImage) {
+      dto.profileImage = await this.fileStorageRepository.getPresignedUrl(entity.profileImage);
+    }
+    return dto;
   }
 
   @Patch('me')
@@ -102,7 +106,7 @@ export class UserController {
         user.sub,
         profileImageFile.mimetype,
       );
-      profileImage = result.url;
+      profileImage = result.key;
     }
 
     const entity = await this.updateUserUseCase.execute({
@@ -110,7 +114,11 @@ export class UserController {
       nickname: dto.nickname,
       profileImage,
     });
-    return UserResponseDto.fromEntity(entity);
+    const responseDto = UserResponseDto.fromEntity(entity);
+    if (entity.profileImage) {
+      responseDto.profileImage = await this.fileStorageRepository.getPresignedUrl(entity.profileImage);
+    }
+    return responseDto;
   }
 
   @Delete('me')
