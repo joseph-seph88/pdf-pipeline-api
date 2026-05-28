@@ -66,7 +66,13 @@ export class DocumentController {
     }
     const entity = await this.uploadDocumentUseCase.execute({
       userId: user.sub,
-      originalName: file.originalname,
+      originalName: (() => {
+        try {
+          return decodeURIComponent(file.originalname);
+        } catch {
+          return file.originalname;
+        }
+      })(),
       buffer: file.buffer,
       mimeType: file.mimetype,
       fileSize: file.size,

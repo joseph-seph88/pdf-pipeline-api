@@ -30,7 +30,6 @@ model Document {
   originalName String
   fileName     String
   s3Key        String
-  s3Url        String?
   fileSize     Int
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt

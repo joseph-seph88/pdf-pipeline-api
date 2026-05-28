@@ -40,7 +40,6 @@ export class UploadDocumentUseCase {
         originalName: basename(params.originalName),
         fileName,
         s3Key: key,
-        s3Url: url,
         fileSize: params.fileSize,
       });
     } catch (error) {
