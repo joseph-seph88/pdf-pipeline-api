@@ -12,6 +12,11 @@ export interface IFileStorageRepository {
     userId: string,
     mimeType: string,
   ): Promise<UploadResult>;
+  uploadImage(
+    buffer: Buffer,
+    userId: string,
+    mimeType: string,
+  ): Promise<UploadResult>;
   delete(key: string): Promise<void>;
   getPresignedUrl(key: string, expiresIn?: number): Promise<string>;
 }
